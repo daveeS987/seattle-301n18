@@ -89,6 +89,7 @@ function makeChartData() {
 function makeChart() {
   makeChartData();
   const ctx = document.getElementById('chartypants').getContext('2d');
+  // eslint-disable-next-line no-undef
   new Chart(ctx, {
     //eslint-disable-line
     type: 'bar',
