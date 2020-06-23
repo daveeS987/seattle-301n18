@@ -11,16 +11,16 @@ const superagent = require('superagent');
 require('dotenv').config();
 
 // Grabbing our port number in our .env file
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000;
 
 // Launching express
 const app = express();
 
 // Enabling cors
-app.use( cors() );
+app.use(cors());
 
 // Let's start the party!
-app.listen( PORT, () => console.log(`Running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Running on port ${PORT}`));
 
 // Create some routes
 
@@ -35,20 +35,20 @@ app.get('/location', (request, response) => {
   superagent.get(API)
     .then(data => {
       // constructor
-    let location = new Location(data.body[0], request.query.city);
-    response.status(200).send(location);
+      let location = new Location(data.body[0], request.query.city);
+      response.status(200).send(location);
     })
-    .catch( () => {
+    .catch(() => {
       response.status(500).send(console.log('something went wrong.'));
     });
 });
 
 app.get('/restaurants', (request, response) => {
-  // 
+  //
   const coordinates = {
     lat: request.query.latitude,
     lon: request.query.longitude
-  }
+  };
   const API = `https://developers.zomato.com/api/v2.1/search?lat=${coordinates.lat}&lon=${coordinates.lon}`;
   superagent.get(API)
     .set('user-key', process.env.ZOMATO)
@@ -58,19 +58,19 @@ app.get('/restaurants', (request, response) => {
       });
       response.status(200).send(output);
     })
-    .catch( () => {
+    .catch(() => {
       response.status(500).send(console.log('Something went wrong in restaurants'));
-    })
-})
+    });
+});
 
-function Location(obj, city){
+function Location(obj, city) {
   this.search_query = city;
   this.formatted_query = obj.display_name;
   this.latitude = obj.lat;
   this.longitude = obj.lon;
 }
 
-function Restaurant(obj){
+function Restaurant(obj) {
   // we need the data from the API
   this.restaurant = obj.name;
   this.locality = obj.location.locality;
