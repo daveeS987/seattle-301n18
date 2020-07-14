@@ -40,7 +40,6 @@ app.use(methodOverride('_method'));
 app.get('/', allTasksHandler);
 app.get('/details/:task_id', getDetailHandler);
 app.get('/add', showForm);
-
 app.post('/add', addTask);
 
 app.delete('/delete/:task_id', deleteTask);
@@ -62,11 +61,11 @@ function allTasksHandler(req, res) {
 }
 
 function notfoundHandler(req, res) {
-  res.status(404).send('An error has occurred')
+  res.status(404).send('An error has occurred');
 }
 
 function showForm(req, res){
-  res.render('./pages/form')
+  res.render('./pages/form');
 }
 
 function addTask(req, res) {
@@ -77,13 +76,13 @@ function addTask(req, res) {
 
   client.query(SQL, param)
     .then( () => {
-      res.redirect('/')
-    })
+      res.redirect('/');
+    });
 }
 
 
 function handleError(error, res){
-  console.log(error)
+  console.log(error);
   res.render('./pages/error', { error: 'Uh-oh'});
 }
 
@@ -95,8 +94,8 @@ function getDetailHandler(req, res){
   client.query(SQL, param)
     .then(results => {
       // console.log(results.rows[0]);
-      res.render('./pages/details', {task: results.rows[0]})
-    })
+      res.render('./pages/details', {task: results.rows[0]});
+    });
 }
 
 function deleteTask(req, res) {
@@ -107,17 +106,17 @@ function deleteTask(req, res) {
   client.query(SQL, values)
     .then( results => {
       res.status(200).redirect('/');
-    })
+    });
 }
 
 function doneTask(req, res) {
-  let SQL = `UPDATE tasks SET status = 'done' WHERE id = $1`
+  let SQL = `UPDATE tasks SET status = 'done' WHERE id = $1`;
   let values = [req.params.task_id];
 
   client.query(SQL, values)
     .then( results => {
       res.status(200).redirect('/');
-    })
+    });
 }
 
 function updateTask(req, res){
@@ -128,12 +127,12 @@ function updateTask(req, res){
   client.query(SQL, params)
     .then( results => {
       res.status(200).redirect(`/details/${req.params.task_id}`);
-    })
+    });
 }
 
 // connect to our database + start our server
 client.connect(() => {
   app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}.`);
-  })
-})
+  });
+});
